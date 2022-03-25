@@ -1,4 +1,4 @@
-import { set, get } from 'lodash';
+const { set, get } = require('lodash');
 const Cookies = require('js-cookie');
 import StorageManager from './index';
 
@@ -10,6 +10,7 @@ export default class CookieStorage extends StorageManager {
 
 
    private setItem(key, value, options?) {
+      //@ts-ignore
     if (this.encryption) {
       Cookies.set(key, this.encrypted(value), options)
     } else {
@@ -34,6 +35,7 @@ export default class CookieStorage extends StorageManager {
     const [ parent, ...otherNames ] = name;
     const session = Cookies.get(parent);
     if (session) {
+      //@ts-ignore
       let result = this.encryption ? this.decrypted(session) : session;
       try {
         result = JSON.parse(decodeURIComponent(result));

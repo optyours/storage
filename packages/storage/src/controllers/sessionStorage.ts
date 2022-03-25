@@ -1,13 +1,14 @@
-import { set, get } from 'lodash';
+const { set, get } = require('lodash');
 import StorageManager from './index';
 
 
 export default class SessionStorage extends StorageManager {
   constructor(props?) {
-    super({encryption: props?.encryption || false});
+    super({encryption: props && props.encryption || false});
   }
 
   private setItem(key, value) {
+      //@ts-ignore
     if (this.encryption) {
       sessionStorage.setItem(key, this.encrypted(value));
     } else {
@@ -32,6 +33,7 @@ export default class SessionStorage extends StorageManager {
     const [ parent, ...otherNames ] = name;
     const session = sessionStorage.getItem(parent);
     if (session) {
+      //@ts-ignore
       let result = this.encryption ? this.decrypted(session) : session;
       try {
         result = JSON.parse(decodeURIComponent(result));
